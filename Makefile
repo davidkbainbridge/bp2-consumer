@@ -41,6 +41,7 @@ cross-build-hook-exe:
 	)
 	mkdir -p bp2/hooks
 	cp $(TD)/bp2-hook-to-rest/hook-to-rest bp2/hooks
+	cp docker/fake-bash bp2/hooks/bash
 	-rm -rf $(TD)
 
 cross-build:
@@ -51,16 +52,17 @@ cross-build:
 	go build -v -o $(SERVICE)-docker $(MAIN_PACKAGE)
 
 clean:
-	rm -rf src pkg bin $(SERVICE) $(SERVICE)-docker bp2/hooks
+	rm -rf src pkg bin $(SERVICE) $(SERVICE)-docker bp2
 
 enter:
 	@echo "Unable to access container shell, please use 'docker exec' command."
 
 image: cross-build cross-build-hook-exe
 	docker build -t $(DOCKER_REPO)/$(SERVICE):$(GITCOMMIT) .
+	docker tag -f $(DOCKER_REPO)/$(SERVICE):$(GITCOMMIT) $(DOCKER_REPO)/$(SERVICE):build
 
 start:
-	docker run -tid --name=$(SERVICE) $(DOCKER_REPO)/$(SERVICE):$(GITCOMMIT)
+	docker run -tid --name=$(SERVICE) $(DOCKER_REPO)/$(SERVICE):build
 
 logs:
 	docker logs $(SERVICE)

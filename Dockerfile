@@ -7,6 +7,7 @@ ENV BP_HOOK_URL_REDIRECT_SOUTHBOUND_UPDATE=http://127.0.0.1:6789/api/v1/hook/sou
 
 ADD bp2/hooks /bp2/hooks
 
-RUN ln -s /bp2/hooks/hook-to-rest /bp2/hooks/southbound-update
+RUN ln -s /bp2/hooks/bash /bin/bash \
+	&& ln -s /bp2/hooks/hook-to-rest /usr/bin/southbound-update
 
 ENTRYPOINT ["/root/bp2-consumer"]

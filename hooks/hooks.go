@@ -13,9 +13,11 @@ func HandleConfigHooks(changes chan string) {
 		json.NewDecoder(r.Body).Decode(&data)
 		log.Printf("%v\n", data)
 		if sbd, ok := data["BP_HOOK_SOUTHBOUND_DATA"]; ok {
-			if url, ok := sbd.(map[string]interface{})["url"]; ok {
-				changes <- url.(string)
-				return
+			for _, item := range sbd.([]interface{}) {
+				if url, ok := item.(map[string]interface{})["url"]; ok {
+					changes <- url.(string)
+					return
+				}
 			}
 		}
 		log.Printf("NO URL IN DATA CHANGE REQUEST")
