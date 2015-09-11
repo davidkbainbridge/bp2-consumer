@@ -14,9 +14,11 @@ func HandleConfigHooks(changes chan string) {
 		log.Printf("%v\n", data)
 		if sbd, ok := data["BP_HOOK_SOUTHBOUND_DATA"]; ok {
 			for _, item := range sbd.([]interface{}) {
-				if url, ok := item.(map[string]interface{})["url"]; ok {
-					changes <- url.(string)
-					return
+				if name, ok := item.(map[string]interface{})["interface"]; ok && name == "string" {
+					if url, ok := item.(map[string]interface{})["url"]; ok {
+						changes <- url.(string)
+						return
+					}
 				}
 			}
 		}
