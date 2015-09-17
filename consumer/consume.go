@@ -32,7 +32,7 @@ func Consume(url string) {
 		log.Printf("ERROR: Unable to marshal data into JSON structure: %s\n", err)
 		return
 	}
-	resp, err := http.Post(url + "uppercase", "application/json", bytes.NewReader(b))
+	resp, err := http.Post(url+"uppercase", "application/json", bytes.NewReader(b))
 	if err != nil {
 		log.Printf("ERROR: Failed to POST to string service: %s\n", err)
 		return
@@ -56,5 +56,5 @@ func Consume(url string) {
 		log.Printf("ERROR: Did not receive value from string service")
 		return
 	}
-	log.Printf("Converted string to '%s'\n", val)
+	log.Printf("Converted string by '%s' to '%s'\n", result["by"], val)
 }
